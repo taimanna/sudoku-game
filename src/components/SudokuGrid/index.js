@@ -1,16 +1,19 @@
 import './index.css'
 
-import * as sudokuUtils from '../utils/sudoku'
+import * as sudokuUtils from '../../utils/sudoku'
 
 import { useCallback, useEffect, useState } from 'react'
 
+import CompletePopup from '../CompletePopup'
+
 const SudokuGrid = () => {
   const [sudokuGrid, setSudokuGrid] = useState([])
-  const [sudokuString, setSudokuString] = useState('')
   const [solvedGrid, setSolvedGrid] = useState([])
+  const [difficult, setDifficult] = useState('easy')
   const [prevNumpadCell, setPrevNumpadCell] = useState()
   const [wrongCellPosition, setWrongCellPosition] = useState([])
   const [selectedNumber, setSelectedNumber] = useState(null)
+  const [isPopup, setIsPopup] = useState(false)
   const numpad = [
     ['1', '2', '3'],
     ['4', '5', '6'],
@@ -39,16 +42,8 @@ const SudokuGrid = () => {
   }
 
   const handleChangeDifficult = (e) => {
-    // TODO: generate Sudoku
     const selectedDifficult = e.target.value
-    const stringSudoku = sudokuUtils.sudoku.generate(selectedDifficult)
-    const arrSudoku = sudokuUtils.sudoku.board_string_to_grid(stringSudoku)
-    setSudokuGrid(arrSudoku)
-    setSudokuString(stringSudoku)
-
-    const stringSolved = sudokuUtils.sudoku.solve(stringSudoku)
-    const arrSolved = sudokuUtils.sudoku.board_string_to_grid(stringSolved)
-    setSolvedGrid(arrSolved)
+    setDifficult(selectedDifficult)
   }
 
   const handleClickNumpadCell = (e) => {
@@ -74,7 +69,6 @@ const SudokuGrid = () => {
       updateSudokuGrid[positionX][positionY] = selectedNumber
 
       setSudokuGrid(updateSudokuGrid)
-      setSudokuString(sudokuUtils.sudoku.board_grid_to_string(updateSudokuGrid))
     }
   }
 
@@ -92,30 +86,39 @@ const SudokuGrid = () => {
   }, [sudokuGrid, solvedGrid])
 
   const checkCompletedSudoku = () => {
-    const tdTags = document.querySelectorAll('.sudoku-table td')
+    if (wrongCellPosition.length) {
+      const tdTags = document.querySelectorAll('.sudoku-table td')
 
-    wrongCellPosition.forEach((position) => {
-      tdTags[position].classList.add('wrong-cell')
-    })
+      wrongCellPosition.forEach((position) => {
+        tdTags[position].classList.add('wrong-cell')
+      })
+    } else {
+      setIsPopup(true)
+    }
   }
 
   const stopCheckCompletedSudoku = () => {
-    const tdTags = document.querySelectorAll('.sudoku-table td')
-    wrongCellPosition.forEach((position) => {
-      tdTags[position].classList.remove('wrong-cell')
-    })
+    if (wrongCellPosition.length) {
+      const tdTags = document.querySelectorAll('.sudoku-table td')
+      wrongCellPosition.forEach((position) => {
+        tdTags[position].classList.remove('wrong-cell')
+      })
+    }
   }
 
-  useEffect(() => {
-    const stringSudoku = sudokuUtils.sudoku.generate('easy')
+  const newGame = useCallback(() => {
+    const stringSudoku = sudokuUtils.sudoku.generate(difficult)
     const arrSudoku = sudokuUtils.sudoku.board_string_to_grid(stringSudoku)
     setSudokuGrid(arrSudoku)
-    setSudokuString(stringSudoku)
 
     const stringSolved = sudokuUtils.sudoku.solve(stringSudoku)
     const arrSolved = sudokuUtils.sudoku.board_string_to_grid(stringSolved)
     setSolvedGrid(arrSolved)
-  }, [])
+  }, [difficult])
+
+  useEffect(() => {
+    newGame()
+  }, [newGame])
 
   useEffect(() => {
     compareResult()
@@ -167,6 +170,7 @@ const SudokuGrid = () => {
           </table>
         </div>
       </div>
+      {isPopup && <CompletePopup setIsPopup={setIsPopup} newGame={newGame} />}
     </div>
   )
 }
