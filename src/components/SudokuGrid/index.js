@@ -77,14 +77,20 @@ const SudokuGrid = () => {
   const compareResult = useCallback(() => {
     const flatSudokuGrid = sudokuGrid.flat(Infinity)
     const flatSolvedGrid = solvedGrid.flat(Infinity)
-    const positions = []
-    for (let i = 0; i < 81; i++) {
-      if (flatSudokuGrid[i] !== flatSolvedGrid[i]) {
-        positions.push(i)
-      }
-    }
 
-    setWrongCellPosition(positions)
+    if (flatSudokuGrid.length !== 0) {
+      const positions = []
+      for (let i = 0; i < 81; i++) {
+        if (flatSudokuGrid[i] !== flatSolvedGrid[i]) {
+          positions.push(i)
+        }
+      }
+
+      if (positions.length === 0) {
+        setIsPopup(true)
+      }
+      setWrongCellPosition(positions)
+    }
   }, [sudokuGrid, solvedGrid])
 
   const checkCompletedSudoku = () => {
