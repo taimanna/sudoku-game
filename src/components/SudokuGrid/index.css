@@ -1,35 +1,46 @@
-td {
+.sudoku-container {
+  --border-color: #5e6973;
+  --selected-color: #bac6cd;
+}
+
+.sudoku-container td {
   width: 50px;
   height: 50px;
   text-align: center;
   position: relative;
 }
 
+.sudoku-container .original-cell {
+  cursor: not-allowed;
+  background-color: var(--selected-color);
+}
+
 table,
 tr,
 td {
-  border: 1px solid;
+  border: 1px solid var(--border-color);
   border-collapse: collapse;
 }
 
-td:not(.selected-cell):hover {
-  background-color: rgb(231, 236, 239, 0.5);
+td:not(.selected-cell, .original-cell):hover {
+  cursor: pointer;
+  background-color: #bdfffd;
 }
 
 :where(tbody:nth-child(1), tbody:nth-child(4), tbody:nth-child(7)) td {
-  border-top: 4px solid;
+  border-top: 4px solid var(--border-color);
 }
 
 tbody:last-child td {
-  border-bottom: 4px solid;
+  border-bottom: 4px solid var(--border-color);
 }
 
 tbody :where(td:nth-child(1), td:nth-child(4), td:nth-child(7)) {
-  border-left: 4px solid;
+  border-left: 4px solid var(--border-color);
 }
 
 tbody td:last-child {
-  border-right: 4px solid;
+  border-right: 4px solid var(--border-color);
 }
 
 .difficult {
@@ -56,7 +67,7 @@ tbody td:last-child {
 }
 
 .selected-cell {
-  background-color: #bac6cd;
+  background-color: var(--selected-color);
 }
 
 .wrong-cell::after {

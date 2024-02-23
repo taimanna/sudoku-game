@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import CompletePopup from '../CompletePopup'
 
 const SudokuGrid = () => {
+  const [originalGrid, setOriginalGrid] = useState([])
   const [sudokuGrid, setSudokuGrid] = useState([])
   const [solvedGrid, setSolvedGrid] = useState([])
   const [difficult, setDifficult] = useState('easy')
@@ -62,7 +63,8 @@ const SudokuGrid = () => {
   }
 
   const handleClickSudokuGridCell = (e) => {
-    if (selectedNumber) {
+    const isOriginalCell = e.target.classList.contains('original-cell')
+    if (selectedNumber && !isOriginalCell) {
       const positionX = e.target.dataset.positionX
       const positionY = e.target.dataset.positionY
       const updateSudokuGrid = [...sudokuGrid]
@@ -111,6 +113,14 @@ const SudokuGrid = () => {
     const arrSudoku = sudokuUtils.sudoku.board_string_to_grid(stringSudoku)
     setSudokuGrid(arrSudoku)
 
+    const originalGridPosition = []
+    arrSudoku.flat(Infinity).forEach((value, i) => {
+      if (value !== '.') {
+        originalGridPosition.push(i)
+      }
+    })
+    setOriginalGrid(originalGridPosition)
+
     const stringSolved = sudokuUtils.sudoku.solve(stringSudoku)
     const arrSolved = sudokuUtils.sudoku.board_string_to_grid(stringSolved)
     setSolvedGrid(arrSolved)
@@ -124,10 +134,22 @@ const SudokuGrid = () => {
     compareResult()
   }, [compareResult])
 
+  useEffect(() => {
+    const tdTags = document.querySelectorAll('.sudoku-table td')
+
+    tdTags.forEach((tag) => {
+      tag.classList.remove('original-cell')
+    })
+
+    originalGrid.forEach((index) => {
+      tdTags[index].classList.add('original-cell')
+    })
+  }, [originalGrid])
+
   return (
     <div className="sudoku-container">
       <div className="sudoku-grid">
-        <select className="difficult" defaultValue="easy" onChange={handleChangeDifficult}>
+        <select className="difficult" title="Difficult" defaultValue="easy" onChange={handleChangeDifficult}>
           <option className="difficult-option" value="easy">
             Easy
           </option>
