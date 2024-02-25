@@ -4,8 +4,8 @@
 }
 
 .sudoku-container td {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   text-align: center;
   position: relative;
 }
@@ -20,6 +20,7 @@ tr,
 td {
   border: 1px solid var(--border-color);
   border-collapse: collapse;
+  font-size: 25px;
 }
 
 td:not(.selected-cell, .original-cell):hover {
@@ -55,7 +56,7 @@ tbody td:last-child {
 }
 
 .sudoku-container {
-  width: 700px;
+  width: 1100px;
   margin: 50px auto 0;
   display: flex;
   justify-content: space-between;
@@ -64,6 +65,7 @@ tbody td:last-child {
 
 .numpad td {
   height: 50px;
+  width: 50px;
 }
 
 .selected-cell {
@@ -80,4 +82,36 @@ tbody td:last-child {
   left: 0;
   z-index: -1;
   background: linear-gradient(to right bottom, white, white 48%, #f05d5e 49%, #f05d5e 51%, white 52%, white);
+}
+
+.candidate-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.candidate-container .candidate {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 20px;
+}
+
+.candidate-container .candidate-cell {
+  flex-grow: 1;
+  line-height: 20px;
+  font-size: 16px;
+}
+
+.candidate-container .candidate-cell:hover {
+  color: #000000;
+  opacity: 0.5;
+}
+
+.opacity-none {
+  opacity: 0;
+}
+
+.opacity-full {
+  opacity: 1;
 }
