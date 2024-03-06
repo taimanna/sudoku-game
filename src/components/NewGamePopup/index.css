@@ -1,0 +1,50 @@
+.popup-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(000, 000, 000, 0.5);
+}
+
+.popup-container .popup {
+  width: 250px;
+  height: 150px;
+  top: 150px;
+  left: calc(50vw - 125px);
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.popup-container .close-button {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #ffffff;
+  border: none;
+}
+
+.popup-container .close-button:hover {
+  cursor: pointer;
+}
+
+.popup-container .popup-body {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.popup-container .new-game-button {
+  width: 105px;
+  height: 35px;
+  border-radius: 20px;
+  border: none;
+  background-color: #7cffc4;
+  margin-top: 5px;
+}
+
+.popup-container .new-game-button:hover {
+  background-color: rgb(124, 255, 196, 0.7);
+}

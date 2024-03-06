@@ -5,6 +5,7 @@ import * as sudokuUtils from '../../utils/sudoku'
 import { useCallback, useEffect, useState } from 'react'
 
 import CompletePopup from '../CompletePopup'
+import NewGamePopup from '../NewGamePopup'
 
 const SudokuGrid = () => {
   const [originalGrid, setOriginalGrid] = useState([])
@@ -14,7 +15,8 @@ const SudokuGrid = () => {
   const [prevNumpadCell, setPrevNumpadCell] = useState()
   const [wrongCellPosition, setWrongCellPosition] = useState([])
   const [selectedNumber, setSelectedNumber] = useState(null)
-  const [isPopup, setIsPopup] = useState(false)
+  const [isCompletePopup, setIsCompletePopup] = useState(false)
+  const [isNewGamePopup, setIsNewGamePopup] = useState(false)
   const numpad = [
     ['1', '2', '3'],
     ['4', '5', '6'],
@@ -116,21 +118,26 @@ const SudokuGrid = () => {
     const target = e.target ? e.target : e
 
     if (prevNumpadCell) {
-      console.log('if1')
       if (prevNumpadCell === target) {
-        console.log('if2')
         target.classList.toggle('selected-cell')
       } else {
-        console.log('else2')
         prevNumpadCell.classList.remove('selected-cell')
         target.classList.add('selected-cell')
       }
     } else {
-      console.log('else1')
       target.classList.add('selected-cell')
     }
     setPrevNumpadCell(target)
-    target.classList.contains('selected-cell') ? setSelectedNumber(target.innerText) : setSelectedNumber('')
+
+    if (target.classList.contains('selected-cell')) {
+      if (target.innerText === 'X') {
+        setSelectedNumber('.')
+      } else {
+        setSelectedNumber(target.innerText)
+      }
+    } else {
+      setSelectedNumber('')
+    }
   }
 
   const handleClickSudokuGridCell = (e) => {
@@ -159,7 +166,7 @@ const SudokuGrid = () => {
       }
 
       if (positions.length === 0) {
-        setIsPopup(true)
+        setIsCompletePopup(true)
       }
       setWrongCellPosition(positions)
     }
@@ -173,7 +180,7 @@ const SudokuGrid = () => {
         tdTags[position].classList.add('wrong-cell')
       })
     } else {
-      setIsPopup(true)
+      setIsCompletePopup(true)
     }
   }
 
@@ -230,6 +237,7 @@ const SudokuGrid = () => {
   return (
     <div className="sudoku-container">
       <div className="sudoku-grid">
+        <label>Select difficult:</label>
         <select className="difficult" title="Difficult" defaultValue="easy" onChange={handleChangeDifficult}>
           <option className="difficult-option" value="easy">
             Easy
@@ -251,10 +259,15 @@ const SudokuGrid = () => {
         <div className="option-button">
           <div className="numpad-container">
             <table className="numpad">
-              {numpad.map((row, rowIndex) => {
-                return (
-                  <tbody key={rowIndex}>
-                    <tr>
+              <tbody>
+                <tr>
+                  <td colSpan={3} onClick={handleClickNumpadCell}>
+                    x
+                  </td>
+                </tr>
+                {numpad.map((row, rowIndex) => {
+                  return (
+                    <tr key={rowIndex}>
                       {row.map((cell, colIndex) => {
                         return (
                           <td key={colIndex} onClick={handleClickNumpadCell}>
@@ -263,25 +276,46 @@ const SudokuGrid = () => {
                         )
                       })}
                     </tr>
-                  </tbody>
-                )
-              })}
+                  )
+                })}
+              </tbody>
             </table>
           </div>
 
-          <button type="button" onMouseDown={checkCompletedSudoku} onMouseUp={stopCheckCompletedSudoku}>
-            Check
-          </button>
-          <button type="button" onClick={newGame}>
-            New game
-          </button>
-          <br />
+          <div className="option">
+            <button
+              className="template-button"
+              type="button"
+              onMouseDown={checkCompletedSudoku}
+              onMouseUp={stopCheckCompletedSudoku}
+            >
+              Check
+            </button>
+            <button
+              className="template-button"
+              type="button"
+              onClick={() => {
+                setIsNewGamePopup(true)
+              }}
+            >
+              New game
+            </button>
+          </div>
 
-          <input type="checkbox" name="candidate" id="candidate" onChange={getCandidates} />
-          <label htmlFor="candidate">Auto Candidate Mode</label>
+          <div className="candidate-button">
+            <input
+              className="candidate-checkbox"
+              type="checkbox"
+              name="candidate"
+              id="candidate"
+              onChange={getCandidates}
+            />
+            <label htmlFor="candidate">Auto Candidate Mode</label>
+          </div>
         </div>
       </div>
-      {isPopup && <CompletePopup setIsPopup={setIsPopup} newGame={newGame} />}
+      {isCompletePopup && <CompletePopup setIsCompletePopup={setIsCompletePopup} newGame={newGame} />}
+      {isNewGamePopup && <NewGamePopup setIsNewGamePopup={setIsNewGamePopup} newGame={newGame} />}
     </div>
   )
 }

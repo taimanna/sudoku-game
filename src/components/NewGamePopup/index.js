@@ -2,14 +2,14 @@ import './index.css'
 
 import React from 'react'
 
-const CompletePopup = ({ setIsCompletePopup, newGame }) => {
+const NewGamePopup = ({ setIsNewGamePopup, newGame }) => {
   const handleClosePopup = () => {
-    setIsCompletePopup(false)
+    setIsNewGamePopup(false)
   }
 
   const handleNewGame = () => {
     newGame()
-    setIsCompletePopup(false)
+    setIsNewGamePopup(false)
   }
 
   return (
@@ -19,9 +19,12 @@ const CompletePopup = ({ setIsCompletePopup, newGame }) => {
           x
         </button>
         <div className="popup-body">
-          <p>Sudoku complete!</p>
+          <p>Creat a new game?</p>
           <button className="new-game-button" type="button" onClick={handleNewGame}>
-            New game
+            Yes!
+          </button>
+          <button className="new-game-button" type="button" onClick={handleClosePopup}>
+            No
           </button>
         </div>
       </div>
@@ -29,4 +32,4 @@ const CompletePopup = ({ setIsCompletePopup, newGame }) => {
   )
 }
 
-export default CompletePopup
+export default NewGamePopup

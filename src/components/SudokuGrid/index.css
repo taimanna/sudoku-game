@@ -1,6 +1,8 @@
 .sudoku-container {
   --border-color: #5e6973;
   --selected-color: #bac6cd;
+  --primary-color: #1677ff;
+  --primary-hover: #4096ff;
 }
 
 .sudoku-container td {
@@ -23,31 +25,33 @@ td {
   font-size: 25px;
 }
 
-td:not(.selected-cell, .original-cell):hover {
+td:not(.selected-cell, .original-cell, .delete-button):hover {
   cursor: pointer;
   background-color: #bdfffd;
 }
 
-:where(tbody:nth-child(1), tbody:nth-child(4), tbody:nth-child(7)) td {
+.sudoku-grid :where(tbody:nth-child(1), tbody:nth-child(4), tbody:nth-child(7)) td {
   border-top: 4px solid var(--border-color);
 }
 
-tbody:last-child td {
+.sudoku-grid tbody:last-child td {
   border-bottom: 4px solid var(--border-color);
 }
 
-tbody :where(td:nth-child(1), td:nth-child(4), td:nth-child(7)) {
+.sudoku-grid tbody :where(td:nth-child(1), td:nth-child(4), td:nth-child(7)) {
   border-left: 4px solid var(--border-color);
 }
 
-tbody td:last-child {
+.sudoku-grid tbody td:last-child {
   border-right: 4px solid var(--border-color);
 }
 
 .difficult {
+  margin-left: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
   height: 30px;
   width: 80px;
-  border: none;
   margin-bottom: 20px;
 }
 
@@ -65,15 +69,28 @@ tbody td:last-child {
 
 .sudoku-container .option-container {
   align-self: center;
+  width: 250px;
 }
 
-.numpad td {
+.numpad-container {
+  display: flex;
+  justify-content: center;
+}
+
+.numpad td:not(.delete-button) {
   height: 50px;
   width: 50px;
 }
 
 .selected-cell {
   background-color: var(--selected-color);
+}
+
+.numpad .delete-button {
+  border: none;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
 }
 
 .wrong-cell::after {
@@ -118,4 +135,35 @@ tbody td:last-child {
 
 .opacity-full {
   opacity: 1;
+}
+
+.option {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.candidate-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.candidate-button .candidate-checkbox {
+  margin-right: 10px;
+}
+
+.template-button {
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
+  width: 100px;
+  height: 50px;
+  color: #ffffff;
+  background-color: var(--primary-color);
+}
+
+.template-button:hover {
+  background-color: var(--primary-hover);
 }
