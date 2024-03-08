@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/sudoku-game/static/css/main.c69807fc.css",
+    "main.js": "/sudoku-game/static/js/main.ab218d49.js",
+    "static/js/453.6ceffe47.chunk.js": "/sudoku-game/static/js/453.6ceffe47.chunk.js",
+    "index.html": "/sudoku-game/index.html",
+    "main.c69807fc.css.map": "/sudoku-game/static/css/main.c69807fc.css.map",
+    "main.ab218d49.js.map": "/sudoku-game/static/js/main.ab218d49.js.map",
+    "453.6ceffe47.chunk.js.map": "/sudoku-game/static/js/453.6ceffe47.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c69807fc.css",
+    "static/js/main.ab218d49.js"
+  ]
+}
