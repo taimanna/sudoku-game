@@ -130,7 +130,7 @@ const SudokuGrid = () => {
     setPrevNumpadCell(target)
 
     if (target.classList.contains('selected-cell')) {
-      if (target.innerText === 'X') {
+      if (target.innerText === 'x') {
         setSelectedNumber('.')
       } else {
         setSelectedNumber(target.innerText)
@@ -147,7 +147,9 @@ const SudokuGrid = () => {
       const positionX = currentTarget.dataset.positionX
       const positionY = currentTarget.dataset.positionY
       const updateSudokuGrid = [...sudokuGrid]
-      updateSudokuGrid[positionX][positionY] = selectedNumber
+      if (positionX && positionY) {
+        updateSudokuGrid[positionX][positionY] = selectedNumber
+      }
 
       setSudokuGrid(updateSudokuGrid)
     }
